@@ -1,0 +1,55 @@
+diff --git a/fftools/ffprobe.c b/fftools/ffprobe.c
+index 14b98d22a1..71922846b6 100644
+--- a/fftools/ffprobe.c
++++ b/fftools/ffprobe.c
+@@ -4100,7 +4100,7 @@ static void ffprobe_show_program_version(WriterContext *w)
+     print_str("version", FFMPEG_VERSION);
+     print_fmt("copyright", "Copyright (c) %d-%d the FFmpeg developers",
+               program_birth_year, CONFIG_THIS_YEAR);
+-    print_str("compiler_ident", CC_IDENT);
++    //print_str("compiler_ident", CC_IDENT);
+     print_str("configuration", FFMPEG_CONFIGURATION);
+     writer_print_section_footer(w);
+ 
+diff --git a/fftools/opt_common.c b/fftools/opt_common.c
+index 021ed75272..ed14a390f1 100644
+--- a/fftools/opt_common.c
++++ b/fftools/opt_common.c
+@@ -203,9 +203,9 @@ static void print_program_info(int flags, int level)
+         av_log(NULL, level, " Copyright (c) %d-%d the FFmpeg developers",
+                program_birth_year, CONFIG_THIS_YEAR);
+     av_log(NULL, level, "\n");
+-    av_log(NULL, level, "%sbuilt with %s\n", indent, CC_IDENT);
++    //av_log(NULL, level, "%sbuilt with %s", indent, CC_IDENT);
+ 
+-    av_log(NULL, level, "%sconfiguration: " FFMPEG_CONFIGURATION "\n", indent);
++    av_log(NULL, level, "%sconfiguration: %s", indent, FFMPEG_CONFIGURATION);
+ }
+ 
+ static void print_buildconf(int flags, int level)
+diff --git a/libavcodec/mf_utils.c b/libavcodec/mf_utils.c
+index 48e3a63efc..c9627b8b96 100644
+--- a/libavcodec/mf_utils.c
++++ b/libavcodec/mf_utils.c
+@@ -17,14 +17,16 @@
+  */
+ 
+ #define COBJMACROS
+-#if !defined(_WIN32_WINNT) || _WIN32_WINNT < 0x0602
+-#undef _WIN32_WINNT
+-#define _WIN32_WINNT 0x0602
+-#endif
+ 
+ #include "mf_utils.h"
+ #include "libavutil/pixdesc.h"
+-
++/* Win7 兼容补丁：仅当编译目标 < Win8.1 且 SDK 未提供定义时，提供 GUID 实例 */
++#if _WIN32_WINNT < 0x0603
++#ifndef MF_MT_VIDEO_ROTATION
++     EXTERN_C const GUID MF_MT_VIDEO_ROTATION = {0xC38D31B8,0x31AB,0x4975,{0xAE,0x8E,0x36,0x9A,0x9F,0x86,0x89,0x5F}};
++#  endif
++#endif
++/* 补丁结束 */
+ HRESULT ff_MFGetAttributeSize(IMFAttributes *pattr, REFGUID guid,
+                               UINT32 *pw, UINT32 *ph)
+ {

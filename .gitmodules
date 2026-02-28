@@ -1,0 +1,20 @@
+[submodule "third_party/openh264"]
+	path = third_party/openh264
+	url = https://github.com/cisco/openh264.git
+[submodule "third_party/libvpl"]
+	path = third_party/libvpl
+	url = https://github.com/intel/libvpl.git
+[submodule "third_party/nv-codec-headers"]
+	path = third_party/nv-codec-headers
+	url = https://git.videolan.org/git/ffmpeg/nv-codec-headers.git
+[submodule "third_party/zlib"]
+	path = third_party/zlib
+	url = https://github.com/madler/zlib.git
+[submodule "third_party/SDL"]
+	path = third_party/SDL
+	url = https://github.com/libsdl-org/SDL.git
+	branch = SDL2
+[submodule "third_party/FFmpeg"]
+	path = third_party/FFmpeg
+	url = https://github.com/FFmpeg/FFmpeg.git
+	branch = release/7.1
